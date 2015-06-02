@@ -13,6 +13,11 @@ dependencies {
     apiCompile 'org.apache.logging.log4j:log4j-core:2.1'
 
     //!
+    //! [NETWORK]
+    //!
+    compile 'io.netty:netty-all:5.0.0.Alpha1'
+
+    //!
     //! [REFLECTION]
     //!
     compile 'net.jodah:typetools:0.4.0'
