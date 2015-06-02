@@ -6,8 +6,14 @@ dependencies {
     //! [COLLECTION]
     //!
     apiCompile 'com.goldmansachs:gs-collections:6.1.0'
+
     //!
     //! [LOGGING]
     //!
     apiCompile 'org.apache.logging.log4j:log4j-core:2.1'
+
+    //!
+    //! [REFLECTION]
+    //!
+    compile 'net.jodah:typetools:0.4.0'
 }
