@@ -1,0 +1,33 @@
+//!
+//! [ALL-PROJECT]
+//!
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+//!
+//! [SUB-PROJECT]
+//!
+subprojects {
+    //!
+    //! [JAVA]
+    //!
+    apply plugin: 'java'
+
+    //!
+    //! [JAVA-8-COMPATIBILITY]
+    //!
+    sourceCompatibility = 1.8
+
+    //!
+    //! [REPOSITORIES]
+    //!
+    repositories {
+        maven {
+            url "http://oss.sonatype.org/content/groups/public/"
+        }
+        mavenCentral();
+    }
+}

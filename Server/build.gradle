@@ -1,0 +1,9 @@
+//!
+//! [DEPENDENCIES]
+//!
+dependencies {
+    //!
+    //! [COLLECTION]
+    //!
+    compile 'com.goldmansachs:gs-collections:6.1.0'
+}

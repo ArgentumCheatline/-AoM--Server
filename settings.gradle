@@ -1,0 +1,4 @@
+rootProject.name = '-AoM--Server'
+
+include 'Server'
+
