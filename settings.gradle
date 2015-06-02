@@ -1,4 +1,3 @@
-rootProject.name = '-AoM--Server'
-
-include 'Server'
+include 'AoM-Core'
+include 'AoM-Core-World'
 
