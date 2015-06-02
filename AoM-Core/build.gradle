@@ -5,5 +5,9 @@ dependencies {
     //!
     //! [COLLECTION]
     //!
-    compile 'com.goldmansachs:gs-collections:6.1.0'
+    apiCompile 'com.goldmansachs:gs-collections:6.1.0'
+    //!
+    //! [LOGGING]
+    //!
+    apiCompile 'org.apache.logging.log4j:log4j-core:2.1'
 }

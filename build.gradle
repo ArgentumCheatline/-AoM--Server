@@ -2,9 +2,7 @@
 //! [ALL-PROJECT]
 //!
 allprojects {
-    repositories {
-        jcenter()
-    }
+    repositories { jcenter() }
 }
 
 //!
@@ -12,9 +10,10 @@ allprojects {
 //!
 subprojects {
     //!
-    //! [JAVA]
+    //! [JAVA][IDEA]
     //!
     apply plugin: 'java'
+    apply plugin: 'idea'
 
     //!
     //! [JAVA-8-COMPATIBILITY]
@@ -30,4 +29,65 @@ subprojects {
         }
         mavenCentral();
     }
+
+    //!
+    //! [API-MAIN STRUCTURE]
+    //!
+    sourceSets {
+        api
+        main {
+            java {
+                compileClasspath += api.output
+                runtimeClasspath += api.output
+            }
+        }
+    }
+
+    //!
+    //! [PROVIDED]
+    //!
+    configurations {
+        provided
+        apiProvided
+        compile.extendsFrom apiCompile, apiProvided
+        runtime.extendsFrom apiRuntime
+        compile.extendsFrom provided
+    }
+
+    //!
+    //! [API-MAIN STRUCTURE]
+    //!
+    sourceSets {
+        api {
+            compileClasspath += configurations.apiProvided
+        }
+        main {
+            compileClasspath += configurations.provided
+        }
+    }
+
+    //!
+    //! [IDEA INTEGRATION]
+    //!
+    idea {
+        module {
+            scopes.PROVIDED.plus += [configurations.provided]
+        }
+    }
+
+    //!
+    //! [JAR]
+    //!
+    jar {
+        from sourceSets.api.output
+    }
+
+    //!
+    //! [JAR-TASK]
+    //!
+    task apiJar(type: Jar) {
+        appendix = "API"
+        from sourceSets.api.output
+    }
+    build.dependsOn apiJar
 }
