@@ -63,7 +63,13 @@ public final class SimpleEventManager implements EventManager {
      */
     @Override
     public <T extends Event> void invokeAsyncEvent(T event, Consumer<T> consumer) {
-        EngineAPI.getScheduler().invokeAsyncTask(null, (T) -> invokeEvent(event, consumer));
+        EngineAPI.getScheduler().invokeAsyncTask(null, (T) -> {
+            if (consumer == null) {
+                invokeEvent(event);
+            } else {
+                invokeEvent(event, consumer);
+            }
+        });
     }
 
     /**

@@ -133,7 +133,6 @@ public interface Session {
          */
         @Override
         public void uncaughtException(Message message, Throwable throwable) {
-            throwable.printStackTrace();
             mSession.disconnect("An exception was raised: " + throwable.getMessage());
         }
     }

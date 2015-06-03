@@ -66,7 +66,9 @@ public final class MessageDecoder extends ReplayingDecoder<MessageDecoder.Decode
                 checkpoint(DecoderState.READ_CONTENT);
                 break;
             case READ_CONTENT:
-                output.add(mProtocol.decode(mMessageId, input.readBytes(mMessageLength).nioBuffer()));
+                if (mProtocol != null) {
+                    output.add(mProtocol.decode(mMessageId, input.readBytes(mMessageLength).nioBuffer()));
+                }
                 checkpoint(DecoderState.READ_ID);
         }
     }
