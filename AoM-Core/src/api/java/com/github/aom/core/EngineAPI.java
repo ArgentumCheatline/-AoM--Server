@@ -20,6 +20,7 @@ package com.github.aom.core;
 import com.github.aom.core.event.EventManager;
 import com.github.aom.core.plugin.PluginManager;
 import com.github.aom.core.preference.PreferenceSection;
+import com.github.aom.core.protocol.SessionManager;
 import com.github.aom.core.scheduler.Scheduler;
 
 /**
@@ -92,5 +93,12 @@ public final class EngineAPI {
      */
     static public PluginManager getPluginManager() {
         return sEngine.getPluginManager();
+    }
+
+    /**
+     * {@see Engine#getSessionManager}
+     */
+    static public SessionManager getSessionManager() {
+        return sEngine.getSessionManager();
     }
 }

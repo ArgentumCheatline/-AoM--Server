@@ -19,9 +19,12 @@ package com.github.aom.core;
 
 import com.github.aom.core.event.EventManager;
 import com.github.aom.core.plugin.PluginManager;
-import com.github.aom.core.preference.PreferenceSection;
+import com.github.aom.core.preference.Preference;
+import com.github.aom.core.protocol.SessionManager;
 import com.github.aom.core.scheduler.Scheduler;
 import org.apache.logging.log4j.Logger;
+
+import java.util.function.Consumer;
 
 /**
  * Define the engine.
@@ -29,6 +32,19 @@ import org.apache.logging.log4j.Logger;
  * Contains every service in a modular paradigm.
  */
 public interface Engine {
+    /**
+     * Initialise the engine.
+     *
+     * @param start A consumer to notify the engine has been started.
+     * @param stop  A consumer to notify the engine has been stopped.
+     */
+    public void initialise(Consumer<Engine> start, Consumer<Engine> stop);
+
+    /**
+     * Destroy the engine.
+     */
+    public void destroy();
+
     /**
      * Retrieves the version of the engine.
      *
@@ -48,7 +64,7 @@ public interface Engine {
      *
      * @return A reference to the preferences of the engine.
      */
-    public PreferenceSection getPreferences();
+    public Preference getPreferences();
 
     /**
      * Retrieve the {@link Scheduler} service of the engine.
@@ -70,4 +86,11 @@ public interface Engine {
      * @return A reference to the plugin manager of the engine.
      */
     public PluginManager getPluginManager();
+
+    /**
+     * Retrieve the {@link SessionManager} service of the engine.
+     *
+     * @return A reference to the session manager of the engine.
+     */
+    public SessionManager getSessionManager();
 }
