@@ -209,7 +209,8 @@ public final class SimpleEngine implements Engine {
     private void initPackages() {
         // Load preferences, and if does not exist create a new file.
         try {
-            mPreferences.parse(PREFERENCE_FILE);
+            mPreferences.parseIfAbsentCreate(PREFERENCE_FILE,
+                    SimpleEngine.class.getResourceAsStream("/default/preferences.yml"));
         } catch (IOException exception) {
             LOGGER.warn(exception);
         }
