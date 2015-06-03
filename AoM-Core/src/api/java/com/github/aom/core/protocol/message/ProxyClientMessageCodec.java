@@ -15,30 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aom.core.protocol.codec;
+package com.github.aom.core.protocol.message;
 
 import com.github.aom.core.protocol.InvalidMessageException;
 import com.github.aom.core.protocol.MessageCodec;
-import com.github.aom.core.protocol.message.ProxyServerMessage;
 
 import java.nio.ByteBuffer;
 
 /**
- * Encapsulate the {@link MessageCodec} for {@link ProxyServerMessage}.
+ * Encapsulate the {@link MessageCodec} for {@link ProxyClientMessage}.
  */
-public final class ProxyServerMessageCodec extends MessageCodec<ProxyServerMessage> {
+public final class ProxyClientMessageCodec extends MessageCodec<ProxyClientMessage> {
     /**
-     * Default constructor for {@link ProxyServerMessageCodec}.
+     * Default constructor for {@link ProxyClientMessageCodec}.
      */
-    public ProxyServerMessageCodec() {
-        super(0x02, ProxyServerMessage.class);
+    public ProxyClientMessageCodec() {
+        super(0x01, ProxyClientMessage.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ByteBuffer encode(ProxyServerMessage packet) throws InvalidMessageException {
+    public ByteBuffer encode(ProxyClientMessage packet) throws InvalidMessageException {
         return ByteBuffer.wrap(packet.getBytes());
     }
 
@@ -46,7 +45,7 @@ public final class ProxyServerMessageCodec extends MessageCodec<ProxyServerMessa
      * {@inheritDoc}
      */
     @Override
-    public ProxyServerMessage decode(ByteBuffer buffer) throws InvalidMessageException {
-        return new ProxyServerMessage(buffer.array());
+    public ProxyClientMessage decode(ByteBuffer buffer) throws InvalidMessageException {
+        return new ProxyClientMessage(buffer.array());
     }
 }
