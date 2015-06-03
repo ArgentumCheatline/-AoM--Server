@@ -40,6 +40,13 @@ public interface Plugin {
     public Logger getLogger();
 
     /**
+     * Retrieve the {@link Descriptor} of the plug-in.
+     *
+     * @return A reference to the descriptor of the plug-in.
+     */
+    public Descriptor getDescriptor();
+
+    /**
      * Retrieve the folder of the plug-in's assets.
      *
      * @return A reference to the folder of the plug-in.

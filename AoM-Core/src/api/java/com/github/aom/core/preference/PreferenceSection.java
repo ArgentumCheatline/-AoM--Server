@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * Define the element structure of the preferences node.
  */
-public interface Preferences {
+public interface PreferenceSection {
     /**
      * Retrieve the name of this section.
      *
@@ -57,24 +57,24 @@ public interface Preferences {
     public void set(String name, Object value);
 
     /**
-     * Creates an empty {@link Preferences} at the specified path.
+     * Creates an empty {@link PreferenceSection} at the specified path.
      * <br/>
      * Any value that was previously set at this path will be overwritten. If
-     * the previous value was itself a {@link Preferences}, it will
+     * the previous value was itself a {@link PreferenceSection}, it will
      * be orphaned.
      *
      * @param name The name of the section whose value should be set.
      *
      * @return A reference to the newly created section.
      */
-    public Preferences createSection(String name);
+    public PreferenceSection createSection(String name);
 
     /**
-     * Creates a {@link Preferences} at the specified path, with
+     * Creates a {@link PreferenceSection} at the specified path, with
      * specified values.
      * <br/>
      * Any value that was previously set at this path will be overwritten. If
-     * the previous value was itself a {@link Preferences}, it will
+     * the previous value was itself a {@link PreferenceSection}, it will
      * be orphaned.
      *
      * @param name The name of the section whose value should be set.
@@ -82,7 +82,7 @@ public interface Preferences {
      *
      * @return A reference to the newly created section.
      */
-    public Preferences createSection(String name, Map<?, ?> map);
+    public PreferenceSection createSection(String name, Map<?, ?> map);
 
     /**
      * Get the value specified for a given attribute on this element as a section.
@@ -91,7 +91,7 @@ public interface Preferences {
      *
      * @return A reference to the section or null if does not exist.
      */
-    public Preferences getSection(String path);
+    public PreferenceSection getSection(String path);
 
     /**
      * Get the value specified for a given attribute on this element as an object.

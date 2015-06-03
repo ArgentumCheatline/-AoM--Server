@@ -19,7 +19,7 @@ package com.github.aom.core;
 
 import com.github.aom.core.event.EventManager;
 import com.github.aom.core.plugin.PluginManager;
-import com.github.aom.core.preference.Preferences;
+import com.github.aom.core.preference.PreferenceSection;
 import com.github.aom.core.scheduler.Scheduler;
 
 /**
@@ -69,7 +69,7 @@ public final class EngineAPI {
     /**
      * {@see Engine#getPreferences}
      */
-    static public Preferences getPreferences() {
+    static public PreferenceSection getPreferences() {
         return sEngine.getPreferences();
     }
 

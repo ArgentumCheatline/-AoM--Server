@@ -19,7 +19,7 @@ package com.github.aom.core;
 
 import com.github.aom.core.event.EventManager;
 import com.github.aom.core.plugin.PluginManager;
-import com.github.aom.core.preference.Preferences;
+import com.github.aom.core.preference.PreferenceSection;
 import com.github.aom.core.scheduler.Scheduler;
 import org.apache.logging.log4j.Logger;
 
@@ -44,11 +44,11 @@ public interface Engine {
     public Logger getLogger();
 
     /**
-     * Retrieves the {@link Preferences} of the engine.
+     * Retrieves the {@link com.github.aom.core.preference.PreferenceSection} of the engine.
      *
      * @return A reference to the preferences of the engine.
      */
-    public Preferences getPreferences();
+    public PreferenceSection getPreferences();
 
     /**
      * Retrieve the {@link Scheduler} service of the engine.

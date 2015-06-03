@@ -3,6 +3,11 @@
 //!
 dependencies {
     //!
+    //! [COMMON]
+    //!
+    apiCompile 'commons-io:commons-io:2.4'
+
+    //!
     //! [COLLECTION]
     //!
     apiCompile 'com.goldmansachs:gs-collections:6.1.0'
@@ -11,6 +16,11 @@ dependencies {
     //! [LOGGING]
     //!
     apiCompile 'org.apache.logging.log4j:log4j-core:2.1'
+
+    //!
+    //! [Serialization -> YML]
+    //!
+    apiCompile 'org.yaml:snakeyaml:1.15'
 
     //!
     //! [NETWORK]
