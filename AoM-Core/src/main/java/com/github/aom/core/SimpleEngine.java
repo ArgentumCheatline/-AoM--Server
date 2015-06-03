@@ -27,6 +27,7 @@ import com.github.aom.core.protocol.SessionManager;
 import com.github.aom.core.protocol.SimpleSessionManager;
 import com.github.aom.core.scheduler.Scheduler;
 import com.github.aom.core.scheduler.SimpleScheduler;
+import com.github.aom.core.scheduler.TaskPriority;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -235,6 +236,9 @@ public final class SimpleEngine implements Engine {
 
         mSessionManager.bind(address, port);
         getLogger().info("Server listening to: " + address.getHostAddress() + ":" + port);
+
+        // Pulse the SessionManager every tick.
+        mScheduler.invokeRepeatingTask(null, (T) -> mSessionManager.pulse(), TaskPriority.CRITICAL, 0L, 1L);
     }
 
     /**

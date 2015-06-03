@@ -5,5 +5,5 @@ dependencies {
     //!
     //! [COLLECTION]
     //!
-    compile project (':AoM-Core-World')
+    compile project (':AoM-Core')
 }

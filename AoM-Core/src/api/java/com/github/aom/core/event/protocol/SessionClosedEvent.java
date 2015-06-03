@@ -15,34 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aom.core.protocol.event;
+package com.github.aom.core.event.protocol;
 
-import com.github.aom.core.event.Event;
 import com.github.aom.core.protocol.Session;
 
 /**
- * An {@link Event} used to signify a {@link Session} based event.
+ * Define an {@link SessionEvent} to handle when a close a connection.
  */
-public abstract class SessionEvent extends Event {
-    private final Session mSession;
-
+public final class SessionClosedEvent extends SessionEvent {
     /**
-     * Default constructor for {@link SessionEvent}.
+     * Default constructor for {@link SessionClosedEvent}.
      *
-     * @param session       The session of the event.
-     * @param isCancellable True if the event is cancellable.
+     * @param session The session of the event.
      */
-    public SessionEvent(Session session, boolean isCancellable) {
-        super(isCancellable);
-        mSession = session;
-    }
-
-    /**
-     * Retrieves the {@link Session} of the event.
-     *
-     * @return The session of the event.
-     */
-    public final Session getSession() {
-        return mSession;
+    public SessionClosedEvent(Session session) {
+        super(session, false);
     }
 }

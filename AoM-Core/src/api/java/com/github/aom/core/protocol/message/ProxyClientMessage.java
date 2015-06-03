@@ -15,20 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aom.core.plugin.event;
+package com.github.aom.core.protocol.message;
 
-import com.github.aom.core.plugin.Plugin;
+import com.github.aom.core.protocol.Message;
 
 /**
- * Define an {@link PluginEvent} to handle when a plug-in is disabled.
+ * Encapsulate a {@link Message} that represent a packet for the client.
  */
-public final class PluginDisabledEvent extends PluginEvent {
+public final class ProxyClientMessage extends Message {
+    private final byte[] mBytes;
+
     /**
-     * Default constructor for {@link PluginDisabledEvent}.
+     * Default constructor for {@link ProxyClientMessage}.
      *
-     * @param plugin The plug-in of the event.
+     * @param bytes A collection of bytes.
      */
-    public PluginDisabledEvent(Plugin plugin) {
-        super(plugin, false);
+    public ProxyClientMessage(byte[] bytes) {
+        this.mBytes = bytes;
+    }
+
+    /**
+     * Retrieves the bytes of the packet.
+     *
+     * @return A reference to the collection of bytes.
+     */
+    public byte[] getBytes() {
+        return mBytes;
     }
 }

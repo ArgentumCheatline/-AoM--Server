@@ -17,8 +17,8 @@
  */
 package com.github.aom.core.protocol;
 
-import com.github.aom.core.protocol.event.SessionClosedEvent;
-import com.github.aom.core.protocol.event.SessionConnectedEvent;
+import com.github.aom.core.event.protocol.SessionClosedEvent;
+import com.github.aom.core.event.protocol.SessionConnectedEvent;
 import com.github.aom.core.protocol.pipeline.MessageInitializer;
 import com.gs.collections.api.map.MutableMap;
 import com.gs.collections.impl.map.mutable.UnifiedMap;

@@ -15,20 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aom.core.plugin.event;
+package com.github.aom.core.event.plugin;
 
+import com.github.aom.core.event.Event;
 import com.github.aom.core.plugin.Plugin;
 
 /**
- * Define an {@link PluginEvent} to handle when a plug-in is enabled.
+ * An {@link Event} used to signify a {@link Plugin} based event.
  */
-public final class PluginEnabledEvent extends PluginEvent {
+public abstract class PluginEvent extends Event {
+    private final Plugin mPlugin;
+
     /**
-     * Default constructor for {@link PluginEnabledEvent}.
+     * Default constructor for {@link PluginEvent}.
      *
-     * @param plugin The plug-in of the event.
+     * @param plugin        The plug-in of the event.
+     * @param isCancellable True if the event is cancellable.
      */
-    public PluginEnabledEvent(Plugin plugin) {
-        super(plugin, false);
+    public PluginEvent(Plugin plugin, boolean isCancellable) {
+        super(isCancellable);
+        mPlugin = plugin;
+    }
+
+    /**
+     * Retrieves the {@link Plugin} of the event.
+     *
+     * @return The plug-in of the event.
+     */
+    public final Plugin getPlugin() {
+        return mPlugin;
     }
 }

@@ -15,20 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aom.core.protocol.event;
+package com.github.aom.core.event.plugin;
 
-import com.github.aom.core.protocol.Session;
+import com.github.aom.core.plugin.Plugin;
 
 /**
- * Define an {@link SessionEvent} to handle when a close a connection.
+ * Define an {@link PluginEvent} to handle when a plug-in is enabled.
  */
-public final class SessionClosedEvent extends SessionEvent {
+public final class PluginEnabledEvent extends PluginEvent {
     /**
-     * Default constructor for {@link SessionClosedEvent}.
+     * Default constructor for {@link PluginEnabledEvent}.
      *
-     * @param session The session of the event.
+     * @param plugin The plug-in of the event.
      */
-    public SessionClosedEvent(Session session) {
-        super(session, false);
+    public PluginEnabledEvent(Plugin plugin) {
+        super(plugin, false);
     }
 }

@@ -15,34 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aom.core.plugin.event;
+package com.github.aom.core.event.protocol;
 
-import com.github.aom.core.event.Event;
-import com.github.aom.core.plugin.Plugin;
+import com.github.aom.core.protocol.Session;
 
 /**
- * An {@link Event} used to signify a {@link Plugin} based event.
+ * Define an {@link SessionEvent} to handle when a establish a connection.
  */
-public abstract class PluginEvent extends Event {
-    private final Plugin mPlugin;
-
+public final class SessionConnectedEvent extends SessionEvent {
     /**
-     * Default constructor for {@link PluginEvent}.
+     * Default constructor for {@link SessionConnectedEvent}.
      *
-     * @param plugin        The plug-in of the event.
-     * @param isCancellable True if the event is cancellable.
+     * @param session The session of the event.
      */
-    public PluginEvent(Plugin plugin, boolean isCancellable) {
-        super(isCancellable);
-        mPlugin = plugin;
-    }
-
-    /**
-     * Retrieves the {@link Plugin} of the event.
-     *
-     * @return The plug-in of the event.
-     */
-    public final Plugin getPlugin() {
-        return mPlugin;
+    public SessionConnectedEvent(Session session) {
+        super(session, true);
     }
 }
