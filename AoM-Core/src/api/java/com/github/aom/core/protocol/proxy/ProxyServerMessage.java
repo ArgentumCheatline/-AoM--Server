@@ -15,22 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aom.core.protocol.message;
+package com.github.aom.core.protocol.proxy;
 
 import com.github.aom.core.protocol.Message;
 
 /**
- * Encapsulate a {@link Message} that represent a packet for the client.
+ * Encapsulate a {@link Message} that represent a packet for the server.
  */
-public final class ProxyClientMessage extends Message {
+public final class ProxyServerMessage extends Message {
     private final byte[] mBytes;
 
     /**
-     * Default constructor for {@link ProxyClientMessage}.
+     * Default constructor for {@link ProxyServerMessage}.
      *
      * @param bytes A collection of bytes.
      */
-    public ProxyClientMessage(byte[] bytes) {
+    public ProxyServerMessage(byte[] bytes) {
         this.mBytes = bytes;
     }
 

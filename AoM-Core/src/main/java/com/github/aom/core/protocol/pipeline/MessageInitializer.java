@@ -17,8 +17,11 @@
  */
 package com.github.aom.core.protocol.pipeline;
 
-import com.github.aom.core.protocol.SimpleSession;
+import com.github.aom.core.protocol.Protocol;
 import com.github.aom.core.protocol.SimpleSessionManager;
+import com.github.aom.core.protocol.proxy.ProxyClientMessageCodec;
+import com.github.aom.core.protocol.proxy.ProxyPingMessageCodec;
+import com.github.aom.core.protocol.proxy.ProxyServerMessageCodec;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
@@ -28,6 +31,14 @@ import java.io.IOException;
  * Define a {@link ChannelInitializer} for {@link SimpleSessionManager}.
  */
 public class MessageInitializer extends ChannelInitializer<SocketChannel> {
+    private final static Protocol PROTOCOL = new Protocol.Builder()
+            .outbound(ProxyClientMessageCodec.class)
+            .outbound(ProxyServerMessageCodec.class)
+            .outbound(ProxyPingMessageCodec.class)
+            .inbound(ProxyClientMessageCodec.class)
+            .inbound(ProxyServerMessageCodec.class)
+            .inbound(ProxyPingMessageCodec.class)
+            .build();
     private final SimpleSessionManager mParent;
 
     /**
@@ -44,8 +55,8 @@ public class MessageInitializer extends ChannelInitializer<SocketChannel> {
      */
     @Override
     protected void initChannel(SocketChannel ch) throws IOException {
-        ch.pipeline().addLast(SimpleSession.HANDLER_DECODER, new MessageDecoder());
-        ch.pipeline().addLast(SimpleSession.HANDLER_ENCODER, new MessageEncoder());
-        ch.pipeline().addLast(SimpleSession.HANDLER, new MessageHandler(mParent));
+        ch.pipeline().addLast("decoder", new MessageDecoder(PROTOCOL));
+        ch.pipeline().addLast("encoder", new MessageEncoder(PROTOCOL));
+        ch.pipeline().addLast("handler", new MessageHandler(mParent));
     }
 }

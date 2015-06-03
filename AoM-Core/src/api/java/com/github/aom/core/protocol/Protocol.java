@@ -23,12 +23,11 @@ import com.gs.collections.api.map.primitive.ImmutableIntObjectMap;
 import com.gs.collections.api.map.primitive.MutableIntObjectMap;
 import com.gs.collections.impl.map.mutable.UnifiedMap;
 import com.gs.collections.impl.map.mutable.primitive.IntObjectHashMap;
+import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.util.function.BiConsumer;
 
 /**
  * Represent an interface for a protocol.
@@ -37,38 +36,18 @@ import java.util.function.BiConsumer;
  */
 public final class Protocol {
     private final ImmutableIntObjectMap<MessageCodec<?>> mInbound;
-    private final ImmutableMap<Class<? extends Message>, BiConsumer<Session, ?>> mHandlers;
     private final ImmutableMap<Class<? extends Message>, MessageCodec<?>> mOutbound;
 
     /**
      * Default constructor for {@link Protocol}.
      *
      * @param inbound  A collection of all inbound messages.
-     * @param handlers A collection of handlers for inbound messages.
      * @param outbound A collection of all outbound messages.
      */
     protected Protocol(ImmutableIntObjectMap<MessageCodec<?>> inbound,
-                       ImmutableMap<Class<? extends Message>, BiConsumer<Session, ?>> handlers,
                        ImmutableMap<Class<? extends Message>, MessageCodec<?>> outbound) {
-        this.mHandlers = handlers;
         this.mInbound = inbound;
         this.mOutbound = outbound;
-    }
-
-    /**
-     * Handle a {@link Message}.
-     *
-     * @param session The session of the message.
-     * @param message The message to be handled.
-     *
-     * @throws Exception If the consumer fails to execute the handler.
-     */
-    public <T extends Message> void handle(Session session, T message) throws Exception {
-        final BiConsumer<Session, T> handler = (BiConsumer<Session, T>) mHandlers.get(message.getClass());
-        if (handler == null) {
-            throw new IOException("Message " + message.getClass().getSimpleName() + " doesn't have a handler");
-        }
-        handler.accept(session, message);
     }
 
     /**
@@ -103,8 +82,8 @@ public final class Protocol {
             throw new InvalidMessageException("Unknown operation class: " + message.getClass());
         }
         final ByteBuffer body = codec.encode(message);
-        final ByteBuffer header = ByteBuffer.allocate(4)
-                .putShort((short) codec.getOpcode())
+        final ByteBuffer header = ByteBuffer.allocate(3 + body.capacity())
+                .put((byte) codec.getOpcode())
                 .putShort((short) body.capacity());
         return header.put(body);
     }
@@ -114,22 +93,19 @@ public final class Protocol {
      */
     public final static class Builder {
         private final MutableIntObjectMap<MessageCodec<?>> mInbound = new IntObjectHashMap<>();
-        private final MutableMap<Class<? extends Message>, BiConsumer<Session, ?>> mHandlers = new UnifiedMap<>();
         private final MutableMap<Class<? extends Message>, MessageCodec<?>> mOutbound = new UnifiedMap<>();
 
         /**
          * Register a new inbound message into the protocol.
          *
-         * @param codec   The reference of the codec type.
-         * @param handler The handler for the given message.
+         * @param codec The reference of the codec type.
          */
-        public <J extends Message, T extends MessageCodec<J>> Builder inbound(Class<T> codec, BiConsumer<Session, J> handler) {
+        public <J extends Message, T extends MessageCodec<J>> Builder inbound(Class<T> codec) {
             final T instance = asCodecInstance(codec);
             if (mInbound.containsKey(instance.getOpcode())) {
                 throw new IllegalStateException("The given codec is already registered.");
             }
             mInbound.put(instance.getOpcode(), instance);
-            mHandlers.put(instance.getType(), handler);
             return this;
         }
 
@@ -151,7 +127,7 @@ public final class Protocol {
          * Builds a {@link com.github.aom.core.protocol.Protocol}.
          */
         public Protocol build() {
-            return new Protocol(mInbound.toImmutable(), mHandlers.toImmutable(), mOutbound.toImmutable());
+            return new Protocol(mInbound.toImmutable(), mOutbound.toImmutable());
         }
 
         /**

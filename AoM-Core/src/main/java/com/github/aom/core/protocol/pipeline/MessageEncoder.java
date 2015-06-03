@@ -17,28 +17,28 @@
  */
 package com.github.aom.core.protocol.pipeline;
 
-import com.github.aom.core.protocol.InvalidMessageException;
 import com.github.aom.core.protocol.Message;
 import com.github.aom.core.protocol.Protocol;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
  * Define a {@link MessageToMessageEncoder} for {@link Message}s
  */
 public final class MessageEncoder extends MessageToMessageEncoder {
-    private volatile Protocol mProtocol;
+    private final Protocol mProtocol;
 
     /**
-     * Sets the event of the decoder.
-     *
-     * @param protocol The new event of the decoder.
+     * Default constructor for {@link MessageEncoder}.
      */
-    public void setProtocol(Protocol protocol) {
-        mProtocol = protocol;
+    public MessageEncoder(Protocol protocol) {
+        this.mProtocol = protocol;
     }
 
     /**
@@ -47,8 +47,11 @@ public final class MessageEncoder extends MessageToMessageEncoder {
     @Override
     protected void encode(ChannelHandlerContext context, Object message, List output) throws IOException {
         try {
-            output.add(mProtocol.encode((Message) message));
-        } catch (InvalidMessageException e) {
+            final ByteBuffer buf1 = mProtocol.encode((Message) message);
+            final ByteBuf buf2 = Unpooled.wrappedBuffer(buf1.array());
+            output.add(buf2);
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new IOException(e);
         }
     }

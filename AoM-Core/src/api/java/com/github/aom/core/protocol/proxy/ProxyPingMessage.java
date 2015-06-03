@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aom.core.protocol.message;
+package com.github.aom.core.protocol.proxy;
 
 import com.github.aom.core.protocol.Message;
 

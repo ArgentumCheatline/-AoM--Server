@@ -75,20 +75,6 @@ public interface Session {
     public void disconnect(String reason);
 
     /**
-     * Sets the event of the session.
-     *
-     * @param protocol The new event of the session.
-     */
-    public void setProtocol(Protocol protocol);
-
-    /**
-     * Retrieve the current protocol of the session.
-     *
-     * @return A reference to the current protocol.
-     */
-    public Protocol getProtocol();
-
-    /**
      * Retrieve the uncaught exception handler for this session.
      *
      * @return A reference to the uncaught exception handler.

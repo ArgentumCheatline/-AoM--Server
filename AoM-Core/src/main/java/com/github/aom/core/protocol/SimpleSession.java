@@ -17,8 +17,9 @@
  */
 package com.github.aom.core.protocol;
 
-import com.github.aom.core.protocol.pipeline.MessageDecoder;
-import com.github.aom.core.protocol.pipeline.MessageEncoder;
+import com.github.aom.core.EngineAPI;
+import com.github.aom.core.event.EventManager;
+import com.github.aom.core.event.protocol.SessionMessageEvent;
 import io.netty.channel.Channel;
 
 import java.net.InetSocketAddress;
@@ -32,15 +33,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * Default the implementation for {@link Session}.
  */
 public final class SimpleSession implements Session {
-    public final static String HANDLER = "HANDLER";
-    public final static String HANDLER_ENCODER = "ENCODER";
-    public final static String HANDLER_DECODER = "DECODER";
+    private final static EventManager EVENT_MANAGER = EngineAPI.getEventManager();
 
     protected final UUID mUUID;
     protected final Channel mChannel;
     protected final Queue<Message> mIncomingQueue;
     protected final Queue<Message> mOutgoingQueue;
-    protected final AtomicReference<Protocol> mProtocol;
     protected final AtomicReference<UncaughtExceptionHandler> mUncaughtExceptionHandler;
 
     /**
@@ -54,7 +52,6 @@ public final class SimpleSession implements Session {
         this.mChannel = channel;
         this.mIncomingQueue = new ArrayDeque<>();
         this.mOutgoingQueue = new ArrayDeque<>();
-        this.mProtocol = new AtomicReference<>();
         this.mUncaughtExceptionHandler = new AtomicReference<>(new DefaultUncaughtExceptionHandler(this));
     }
 
@@ -126,24 +123,6 @@ public final class SimpleSession implements Session {
      * {@inheritDoc}
      */
     @Override
-    public void setProtocol(Protocol protocol) {
-        mProtocol.set(protocol);
-        ((MessageEncoder) mChannel.pipeline().get(HANDLER_ENCODER)).setProtocol(protocol);
-        ((MessageDecoder) mChannel.pipeline().get(HANDLER_DECODER)).setProtocol(protocol);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Protocol getProtocol() {
-        return mProtocol.get();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public UncaughtExceptionHandler getUncaughtExceptionHandler() {
         return mUncaughtExceptionHandler.get();
     }
@@ -161,7 +140,8 @@ public final class SimpleSession implements Session {
      */
     public void pulse() {
         while (!mIncomingQueue.isEmpty()) {
-            handleMessage(mIncomingQueue.poll());
+            EVENT_MANAGER.invokeEvent(
+                    new SessionMessageEvent(this, mIncomingQueue.poll()));
         }
         while (!mOutgoingQueue.isEmpty()) {
             mChannel.write(mOutgoingQueue.poll());
@@ -176,21 +156,5 @@ public final class SimpleSession implements Session {
      */
     public <T extends Message> void addMessageToQueue(T message) {
         mIncomingQueue.add(message);
-    }
-
-    /**
-     * Handle a message that has been received by the connection.
-     *
-     * @param message The message to handle by the connection.
-     */
-    private <T extends Message> void handleMessage(T message) {
-        final Protocol protocol = mProtocol.get();
-        if (protocol != null) {
-            try {
-                protocol.handle(this, message);
-            } catch (Exception ex) {
-                getUncaughtExceptionHandler().uncaughtException(message, ex);
-            }
-        }
     }
 }

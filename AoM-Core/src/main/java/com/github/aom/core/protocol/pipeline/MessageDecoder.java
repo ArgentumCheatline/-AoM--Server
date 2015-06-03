@@ -31,24 +31,16 @@ import java.util.List;
  * It converts raw frames to {@link Message} frames.
  */
 public final class MessageDecoder extends ReplayingDecoder<MessageDecoder.DecoderState> {
-    private volatile Protocol mProtocol;
+    private final Protocol mProtocol;
     private int mMessageId;
     private int mMessageLength;
 
     /**
      * Default constructor for {@link MessageDecoder}.
      */
-    public MessageDecoder() {
+    public MessageDecoder(Protocol protocol) {
         super(DecoderState.READ_ID);
-    }
-
-    /**
-     * Sets the event of the decoder.
-     *
-     * @param protocol The new event of the decoder.
-     */
-    public void setProtocol(Protocol protocol) {
-        mProtocol = protocol;
+        this.mProtocol = protocol;
     }
 
     /**
@@ -66,9 +58,7 @@ public final class MessageDecoder extends ReplayingDecoder<MessageDecoder.Decode
                 checkpoint(DecoderState.READ_CONTENT);
                 break;
             case READ_CONTENT:
-                if (mProtocol != null) {
-                    output.add(mProtocol.decode(mMessageId, input.readBytes(mMessageLength).nioBuffer()));
-                }
+                output.add(mProtocol.decode(mMessageId, input.readBytes(mMessageLength).nioBuffer()));
                 checkpoint(DecoderState.READ_ID);
         }
     }
